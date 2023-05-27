@@ -119,6 +119,10 @@ public:
         a = b;
         b =temp;
     }
+
+    int GetLength(){
+        return size;
+    }
 };
 
 
