@@ -7,7 +7,7 @@
 int main(){
     Sort sort = Sort();
     sort.ViewArray();
-    sort.SelectSort();
+    sort.MergeSort(0,19);
     sort.ViewArray();
     return 0;
 }

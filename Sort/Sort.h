@@ -11,7 +11,7 @@
 class Sort {
 private:
     int *array;
-    int size = 10;
+    int size = 20;
 public:
     Sort() {
         this->array = new int[size];
@@ -74,7 +74,44 @@ public:
 
     /// \comment 冒泡排序实现，对序列进行升序排序
     void BubbleSort(){
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size-i-1; j++) {
+                if (this->array[j]>this->array[j+1])
+                    SwapItem(this->array[j],this->array[j+1]);
+            }
+        }
+    }
 
+    /// \comment 归并排序实现
+    void MergeSort(int left,int right){
+        if(left>=right)
+            return;
+        int mid = left+(int)(right-left)/2;
+        MergeSort(left,mid);
+        MergeSort(mid+1,right);
+        Merge(left,right,mid);
+    }
+
+    /// \comment 归并排序的归并方法，两个有序序列，在原有内存空间上合并成一个有序序列，即O(1)的空间复杂度
+    /// \details 利用额外的O(1)空间即temp，我们有两个有序序列，左序列L1，右序列L2，需要利用temp将左右两个有序序列合并成一个完整的序列
+    /// \n 左序列索引设置为i，右序列索引设置为j，对L1和L2中的第一个元素进行比较，保证较小的元素在L1序列中，同时对L1中元素值交换到L2中的元素值进行更新，保证L2一直为有序状态
+    void Merge(int left,int right,int mid){
+        for (int i = left; i <= mid; i++) {
+            if(this->array[i]> this->array[mid+1]){
+                SwapItem(this->array[i],this->array[mid+1]);
+                UpdateL2(mid,right);
+            }
+        }
+    }
+
+    /// \comment 对序列2进行更新操作，保证L2一直有序
+    void UpdateL2(int mid,int right){
+        for (int i = mid+1; i < right; i++) {
+            if(this->array[i]>this->array[i+1])
+                SwapItem(this->array[i],this->array[i+1]);
+            else
+                break;
+        }
     }
 
     void SwapItem(int& a,int& b){
