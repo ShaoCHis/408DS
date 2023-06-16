@@ -3,9 +3,13 @@
 //
 
 #include "Sort/Sort.h"
+#include "Queue/Queue.h"
 using namespace std;
 
 int main(){
     Sort sort = Sort();
-    sort.MergeSort(0,sort.GetLength()-1);
+    sort.ViewArray();
+    sort.BucketSort();
+    sort.ViewArray();
 }
+

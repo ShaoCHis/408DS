@@ -7,6 +7,7 @@
 
 #include<math.h>
 #include<iostream>
+#include "./Queue/Queue.h"
 
 class Sort {
 private:
@@ -122,6 +123,71 @@ public:
 
     int GetLength(){
         return size;
+    }
+
+    /// \comment heap堆实现
+    void Heap(){
+        int last_node = this->size/2 - 1;
+        for (int i = last_node; i >= 0; i--) {
+            HeapSort(i,this->size);
+        }
+        return;
+    }
+
+    /// \comment 对堆的非叶结点进行递归调整
+    void HeapSort(int index,int length){
+        int leftChild = index*2+1;
+        int rightChild = index*2+2;
+        //判断左右孩子结点的值的大小，并递归进行调整
+        if(leftChild>=length&&rightChild>=length)
+            return;
+        else if(leftChild<length&&rightChild<length){
+            int min_index = this->array[leftChild]>this->array[rightChild]?rightChild:leftChild;
+            if(this->array[index]>this->array[min_index]){
+                SwapItem(this->array[index],this->array[min_index]);
+                HeapSort(min_index,length);
+            }
+        }else if(leftChild<length&&rightChild>=length){
+            if(this->array[index]>this->array[leftChild]){
+                SwapItem(this->array[index],this->array[leftChild]);
+                HeapSort(leftChild,length);
+            }
+        }else{
+            if(this->array[index]>this->array[rightChild]){
+                SwapItem(this->array[index],this->array[rightChild]);
+                HeapSort(rightChild,length);
+            }
+        }
+    }
+
+    /// \comment 桶排序实现，桶排序为从低位到高位递归实现
+    /// \details 首先找到数组中最大的元素，用以确定桶排序次数，然后对其进行递归桶排序(默认为十进制数进行排序)
+    void BucketSort(){
+        int max = 0;
+        for (int i = 0; i < size; i++) {
+            max = max>this->array[i]?max:this->array[i];
+        }
+        int time = 1;
+        while(max!=0){
+            Queue bucket[10];
+            for (auto & i : bucket) {
+                i = Queue();
+            }
+            //入桶
+            for (int i = 0; i < size; i++) {
+                bucket[(this->array[i])/int((pow(10,time-1)))%10].push(this->array[i]);
+            }
+            //出桶
+            int stack_num = 0;
+            for (int i = 0; i < size; i++) {
+                while(bucket[stack_num].isEmpty()){
+                    stack_num++;
+                }
+                this->array[i] = bucket[stack_num].pop();
+            }
+            time++;
+            max/=10;
+        }
     }
 };
 
