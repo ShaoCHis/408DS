@@ -129,18 +129,15 @@ public:
      * 第二位表示其左右孩子是否有后续的相同方向的孩子节点进行不同的后续处理，其中0表示没有后续相同的方向的孩子节点，1表示后续有相同方向的孩子节点
      */
     static void SwapAndDelete(TreeNode* _target,TreeNode* _parent,TreeNode* _end,int _1_direction,int _2_direction){
+        _target->SetValue(_end->GetValue());
         switch (_1_direction) {
             case 0:
                 switch (_2_direction) {
                     case 0:
-                        _target->SetValue(_end->GetValue());
                         _parent->SetLeftChild(_end->GetLeftNode());
-                        delete _end;
                         break;
                     case 1:
-                        _target->SetValue(_end->GetValue());
                         _parent->SetRightChild(_end->GetLeftNode());
-                        delete _end;
                         break;
                     default:
                         break;
@@ -148,14 +145,10 @@ public:
             case 1:
                 switch (_2_direction) {
                     case 0:
-                        _target->SetValue(_end->GetValue());
                         _parent->SetRightChild(_end->GetRightNode());
-                        delete _end;
                         break;
                     case 1:
-                        _target->SetValue(_end->GetValue());
                         _parent->SetLeftChild(_end->GetRightNode());
-                        delete _end;
                         break;
                     default:
                         break;
@@ -164,6 +157,7 @@ public:
             default:
                 break;
         }
+        delete _end;
     }
 
     //递归删除节点，进行数据结构的完全析构
